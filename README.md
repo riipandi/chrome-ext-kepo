@@ -35,7 +35,8 @@ After the development of your extension run the command
 pnpm build
 ```
 
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
+Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store.
+Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
 
 ---
 
