@@ -1,26 +1,8 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import './Popup.css'
-
-const getIp = async () => {
-  try {
-    const response = await fetch(`https://ip.seeip.org/geoip`)
-    const ip = response.text()
-    return ip
-  } catch (e) {
-    return null
-  }
-}
 
 export const Popup = () => {
   const [version, _setVersion] = useState('0.1.0')
-
-  useEffect(() => {
-    // Trigger your effect
-    return () => {
-      console.log('DEBUG')
-      // Optional: Any cleanup code
-    }
-  }, [])
 
   return (
     <main>
