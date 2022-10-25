@@ -6,6 +6,7 @@ export default defineManifest({
     'This extension displays your public IPv4 address, provider name and quickly view HTTP headers for the current page.',
   version: '0.1.0',
   manifest_version: 3,
+  host_permissions: ['http://*/*', 'https://*/*'],
   icons: {
     '16': 'img/logo-16.png',
     '32': 'img/logo-34.png',
@@ -13,6 +14,7 @@ export default defineManifest({
     '128': 'img/logo-128.png',
   },
   action: {
+    default_title: 'Kepo',
     default_popup: 'popup.html',
     default_icon: 'img/logo-48.png',
   },
@@ -33,5 +35,5 @@ export default defineManifest({
       matches: [],
     },
   ],
-  permissions: [],
+  permissions: ['storage', 'tabs', 'webRequest'],
 })

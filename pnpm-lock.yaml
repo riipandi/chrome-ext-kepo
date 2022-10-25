@@ -1,11 +1,11 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@crxjs/vite-plugin': ^1.0.12
-  '@preact/preset-vite': ^2.3.0
-  preact: ^10.8.2
+  '@crxjs/vite-plugin': ^1.0.14
+  '@preact/preset-vite': ^2.4.0
+  preact: ^10.11.2
   prettier: ^2.7.1
-  typescript: ^4.7.4
+  typescript: ~4.8.4
   vite: ^2.9.13
 
 dependencies:
