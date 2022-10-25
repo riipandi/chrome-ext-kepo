@@ -2,6 +2,12 @@
 
 > a chrome extension tools built with Vite + Preact, and Manifest v3
 
+- [ ] What is my User Agent
+- [ ] What is my Public IP address
+- [ ] What is website IP address
+- [ ] WHOIS domain for current tab
+- [ ] HTTP Headers viewer
+
 ## Installing
 
 1. Check if your `Node.js` version is >= **14**.
