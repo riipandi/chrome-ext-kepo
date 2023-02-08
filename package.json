@@ -5,7 +5,9 @@
   "description": "This extension displays your public IPv4 address, provider name and quickly view HTTP headers for the current page.",
   "type": "module",
   "license": "MIT",
-  "keywords": [ "chrome-extension" ],
+  "keywords": [
+    "chrome-extension"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -20,7 +22,9 @@
     "@preact/preset-vite": "^2.4.0",
     "prettier": "^2.7.1",
     "typescript": "~4.8.4",
-    "vite": "^2.9.13"
+    "vite": "^2.9.13",
+    "vite-plugin-windicss": "^1.8.10",
+    "windicss": "^3.5.6"
   },
   "engines": {
     "node": ">=14.18.0"

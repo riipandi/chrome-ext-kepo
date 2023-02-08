@@ -21,7 +21,7 @@
 console.info('this is background script')
 
 async function getIp() {
-  const response = await fetch(`https://ip.seeip.org/geoip`)
+  const response = await fetch(`https://ipapi.co/json`)
   const data = await response.json()
   return data
 }

@@ -1,7 +1,8 @@
+import { render } from 'preact'
 import { useState } from 'preact/hooks'
-import './Options.css'
+import 'virtual:windi.css'
 
-export const Options = () => {
+const Options = () => {
   const [version, _setVersion] = useState('0.1.0')
 
   return (
@@ -17,4 +18,4 @@ export const Options = () => {
   )
 }
 
-export default Options
+render(<Options />, document.getElementById('app') as HTMLElement)
