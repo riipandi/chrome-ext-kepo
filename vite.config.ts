@@ -4,11 +4,13 @@ import preact from '@preact/preset-vite'
 import WindiCSS from 'vite-plugin-windicss'
 import { defineManifest } from '@crxjs/vite-plugin'
 
+const extVersion = '0.0.0'
+
 const manifest = defineManifest({
   name: 'Kepo',
   description:
     'This extension displays your public IP address, ISP name and quickly view information for the current page.',
-  version: '0.1.0',
+  version: extVersion,
   manifest_version: 3,
   host_permissions: ['http://*/*', 'https://*/*'],
   icons: {
@@ -54,7 +56,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
     plugins: [crx({ manifest }), preact(), WindiCSS()],
   }
 })

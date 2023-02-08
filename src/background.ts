@@ -45,8 +45,26 @@ chrome.tabs.onUpdated.addListener(async (tabId, _changeInfo, tab) => {
 //   console.log('DEBUG ~ onConnect', userInfo)
 // })
 
-// chrome.runtime.onMessage.addListener(async (_msg, _sender, callback) => {
-//   const userInfo = await getClientInfo()
-//   console.log('DEBUG ~ userInfo', userInfo)
-//   callback(userInfo)
-// })
+/**
+ * Get performance measure.
+ */
+chrome.runtime.onMessage.addListener(async (request, sender, callback) => {
+  // This cache stores page load time for each tab, so they don't interfere
+  chrome.storage.local.get('cache').then((data) => {
+    if (!data.cache) data.cache = {}
+    const currentTabId = sender?.tab?.id || 0
+    data.cache['tab' + currentTabId] = request.timing
+    chrome.storage.local.set(data).then(() => {
+      chrome.action.setBadgeText({ text: request.time, tabId: currentTabId })
+      chrome.action.setPopup({ tabId: currentTabId, popup: 'popup.html' })
+    })
+  })
+})
+
+// cache eviction
+chrome.tabs.onRemoved.addListener((tabId) => {
+  chrome.storage.local.get('cache').then((data) => {
+    if (data.cache) delete data.cache['tab' + tabId]
+    chrome.storage.local.set(data)
+  })
+})
