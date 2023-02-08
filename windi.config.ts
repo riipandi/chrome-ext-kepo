@@ -6,11 +6,7 @@ export default defineConfig({
   safelist: 'p-3 p-4 p-5',
   theme: {
     extend: {
-      colors: {
-        teal: {
-          100: '#096',
-        },
-      },
+      colors: {},
     },
   },
   plugins: [formsPlugin],

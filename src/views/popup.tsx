@@ -5,27 +5,26 @@ import 'virtual:windi.css'
 
 import { PopUpLayout } from '../components/Layout'
 import { MetaSection } from '../components/MetaSection'
-import { IPInfoType } from '../types'
-import { classNames, getClientInfo, parseClientMeta, parseHostMeta } from '../utils'
+import { classNames, parseClientInfo, parseServerInfo } from '../utils'
 
 const Popup = () => {
   const [activeTabId, setActiveTabId] = useState<number>(1)
   const [currentDomain, setCurrentDomain] = useState<string>('')
-  const [clientInfo, setClientInfo] = useState<IPInfoType | undefined>(undefined)
-  const [serverInfo, setServerInfo] = useState<any | undefined>(undefined)
+  const [clientInfo, setClientInfo] = useState<any[]>()
+  const [serverInfo, setServerInfo] = useState<any[]>()
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, async ([currentTab]) => {
       const hostname = parse(currentTab.url || '').hostname || ''
       setCurrentDomain(hostname)
-      setClientInfo(await getClientInfo())
-      setServerInfo(await parseHostMeta(currentTab.url || ''))
+      setClientInfo(await parseClientInfo())
+      setServerInfo(await parseServerInfo(currentTab.url || ''))
     })
   }, [])
 
   const metadata = useMemo(() => {
     return {
-      clientMeta: parseClientMeta(clientInfo),
+      clientMeta: clientInfo,
       serverMeta: serverInfo,
     }
   }, [currentDomain, clientInfo, serverInfo])
