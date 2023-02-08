@@ -9,7 +9,11 @@ Summary
   5. version timestamp follow the yyyy.MM.dd format
 ```
 
-## 0.0.0 [2022.10.26]
+## 0.1.0 [2023.01.08]
+
+- feat: initial public release
+
+## 0.0.1 [2022.10.26]
 
 - feat: initial scaffolding
 - feat: generator by ![create-chrome-ext](https://www.npmjs.com/package/create-chrome-ext)

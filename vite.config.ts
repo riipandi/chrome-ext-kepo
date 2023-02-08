@@ -4,7 +4,7 @@ import preact from '@preact/preset-vite'
 import WindiCSS from 'vite-plugin-windicss'
 import { defineManifest } from '@crxjs/vite-plugin'
 
-const extVersion = '0.0.0'
+const extVersion = '0.1.0'
 
 const manifest = defineManifest({
   name: 'Kepo',
