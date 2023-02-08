@@ -1,13 +1,14 @@
 import { classNames } from '../utils'
 
 interface MetaSectionProps {
-  currentTabDomain?: string
+  currentDomain?: string
   metadata: any
+  className?: string
 }
 
-export const MetaSection = ({ currentTabDomain, metadata }: MetaSectionProps) => {
+export const MetaSection = ({ currentDomain, metadata, className }: MetaSectionProps) => {
   return (
-    <div className="flex flex-col pb-2 pt-1">
+    <div className={classNames(className && className, 'flex flex-col pb-2 pt-1')}>
       <table className="min-w-full">
         <thead className="sr-only">
           <tr>
@@ -18,22 +19,34 @@ export const MetaSection = ({ currentTabDomain, metadata }: MetaSectionProps) =>
           </tr>
         </thead>
         <tbody>
-          {metadata.map((meta: any, idx: number) => (
+          {metadata?.map((meta: any, idx: number) => (
             <tr key={meta.name} className={classNames(idx > 0 && 'border-t border-gray-200')}>
               <td className="py-2 pl-4 pr-3 text-gray-900 text-xs">{meta.name}</td>
               <td className="py-2 px-3 font-mono text-xs text-right text-gray-500">
-                {meta.value || '-'}
+                {meta.url ? (
+                  <a
+                    href={meta.url}
+                    className="hover:text-blue-500"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {meta.value}
+                  </a>
+                ) : (
+                  <span>{meta.value || '-'}</span>
+                )}
               </td>
             </tr>
           ))}
 
-          {currentTabDomain && (
+          {/* {currentDomain && (
             <>
               <tr className="border-t border-gray-200">
                 <td className="py-2 pl-4 pr-3 text-gray-900 text-xs">Host NS Lookup</td>
-                <td className="py-2 px-3 italic text-xs hover:text-blue-500 text-right text-gray-500">
+                <td className="py-2 px-3 font-mono text-xs text-right text-gray-500">
                   <a
-                    href={`https://dmns.app/${currentTabDomain}/dns-records`}
+                    href={`https://dmns.app/${currentDomain}/dns-records`}
+                    className="hover:text-blue-500"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -43,9 +56,10 @@ export const MetaSection = ({ currentTabDomain, metadata }: MetaSectionProps) =>
               </tr>
               <tr className="border-t border-gray-200">
                 <td className="py-2 pl-4 pr-3 text-gray-900 text-xs">WHOIS Domain</td>
-                <td className="py-2 px-3 italic text-xs hover:text-blue-500 text-right text-gray-500">
+                <td className="py-2 px-3 font-mono text-xs text-right text-gray-500">
                   <a
-                    href={`https://dmns.app/${currentTabDomain}/whois`}
+                    href={`https://dmns.app/${currentDomain}/whois`}
+                    className="hover:text-blue-500"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -54,7 +68,7 @@ export const MetaSection = ({ currentTabDomain, metadata }: MetaSectionProps) =>
                 </td>
               </tr>
             </>
-          )}
+          )} */}
         </tbody>
       </table>
     </div>

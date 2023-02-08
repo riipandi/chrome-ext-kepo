@@ -18,7 +18,20 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import { getHostInfo, getClientInfo, isValidDomain } from './utils'
+import { isValidDomain } from './utils'
+
+/**
+ * Perform get host information when tab activated or updated.
+ */
+chrome.tabs.onUpdated.addListener(async (tabId, _changeInfo, tab) => {
+  if (!tab.url || !isValidDomain(tab.url)) {
+    chrome.action.setIcon({ tabId, path: 'img/offline-48.png' })
+    chrome.action.setPopup({ popup: '' })
+  } else {
+    chrome.action.setIcon({ tabId, path: 'img/logo-48.png' })
+    chrome.action.setPopup({ popup: 'popup.html' })
+  }
+})
 
 // chrome.runtime.onInstalled.addListener(() => {
 //   console.log('onInstalled...')
@@ -31,22 +44,6 @@ import { getHostInfo, getClientInfo, isValidDomain } from './utils'
 //   const userInfo = await getClientInfo()
 //   console.log('DEBUG ~ onConnect', userInfo)
 // })
-
-/**
- * Perform get host information when tab activated or updated.
- */
-chrome.tabs.onUpdated.addListener(async (tabId, _changeInfo, tab) => {
-  if (!tab.url || !isValidDomain(tab.url)) {
-    chrome.action.setIcon({ tabId, path: 'img/offline-48.png' })
-    chrome.action.setPopup({ popup: '' })
-  } else {
-    chrome.action.setIcon({ tabId, path: 'img/logo-48.png' })
-    chrome.action.setPopup({ popup: 'popup.html' })
-
-    const hostInfo = await getHostInfo(tab.url)
-    console.log('DEBUG ~ hostInfo', hostInfo)
-  }
-})
 
 // chrome.runtime.onMessage.addListener(async (_msg, _sender, callback) => {
 //   const userInfo = await getClientInfo()

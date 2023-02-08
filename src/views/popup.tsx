@@ -3,72 +3,57 @@ import { useEffect, useMemo, useState } from 'preact/hooks'
 import { parse } from 'tldts'
 import 'virtual:windi.css'
 
-import { AboutButton } from '../components/Button'
+import { PopUpLayout } from '../components/Layout'
 import { MetaSection } from '../components/MetaSection'
-import { classNames } from '../utils'
-
-const tabs = [
-  { id: 1, name: 'Server Info' },
-  { id: 2, name: 'Client Info' },
-]
+import { IPInfoType } from '../types'
+import { classNames, getClientInfo, parseClientMeta, parseHostMeta } from '../utils'
 
 const Popup = () => {
-  const [currentTabDomain, setCurrentTabDomain] = useState<any | undefined>(undefined)
-  const [userInfo, setClientInfo] = useState<any | undefined>(undefined)
-  const [hostInfo, setHostInfo] = useState<any | undefined>(undefined)
   const [activeTabId, setActiveTabId] = useState<number>(1)
-
-  const metadata = useMemo(() => {
-    return {
-      clientMeta: [
-        { name: 'Your IP Address', value: null },
-        { name: 'ISP Name', value: null },
-        { name: 'ISP Country', value: null },
-        { name: 'ISP Region', value: null },
-      ],
-      serverMeta: [
-        { name: 'Page loading time', value: null },
-        { name: 'Host IPv4 address', value: null },
-        { name: 'Host IPv6 address', value: null },
-      ],
-    }
-  }, [])
+  const [currentDomain, setCurrentDomain] = useState<string>('')
+  const [clientInfo, setClientInfo] = useState<IPInfoType | undefined>(undefined)
+  const [serverInfo, setServerInfo] = useState<any | undefined>(undefined)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`https://ipwho.is`)
-      const data = await response.json()
-      setClientInfo(data)
-    }
+    chrome.tabs.query({ active: true, currentWindow: true }, async ([currentTab]) => {
+      const domain = parse(currentTab.url || '').domain || ''
+      const hostname = parse(currentTab.url || '').hostname || ''
 
-    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
-      const url = parse(currentTab.url || '')
-      const currentTabID = currentTab.id || 0
+      // const currentTabID = currentTab.id || 0
+      // chrome.tabs.sendMessage(currentTabID, '', (response) => {
+      //   console.log('DEBUG ~ response', response)
+      //   setHostIpAddr(response)
+      // })
 
-      chrome.tabs.sendMessage(currentTabID, '', (response) => {
-        console.log('DEBUG ~ response', response)
-        setHostInfo(response)
-      })
-
-      setCurrentTabDomain(url.domain)
-      fetchData()
+      setCurrentDomain(hostname)
+      setClientInfo(await getClientInfo())
+      setServerInfo(await parseHostMeta(domain))
     })
   }, [])
 
-  return (
-    <div className="w-100 bg-white">
-      <header className="py-2.5 px-3.5 bg-green-500 text-white flex items-center justify-between">
-        <div>
-          <h1 className="font-medium text-sm">{currentTabDomain}</h1>
-        </div>
-        <div>
-          <AboutButton />
-        </div>
-      </header>
+  const metadata = useMemo(() => {
+    return {
+      clientMeta: parseClientMeta(clientInfo),
+      serverMeta: serverInfo,
+    }
+  }, [currentDomain, clientInfo, serverInfo])
 
+  if (!clientInfo || !serverInfo) {
+    return (
+      <PopUpLayout domain={currentDomain}>
+        <div className="h-9 p-2">Loading information...</div>
+      </PopUpLayout>
+    )
+  }
+
+  return (
+    <PopUpLayout domain={currentDomain}>
       <main className="block">
         <nav className="isolate flex divide-x divide-gray-200" aria-label="Tabs">
-          {tabs.map((tab, tabIdx) => (
+          {[
+            { id: 1, name: 'Server Info' },
+            { id: 2, name: 'Client Info' },
+          ].map((tab, tabIdx) => (
             <button
               type="button"
               key={tab.name}
@@ -92,11 +77,17 @@ const Popup = () => {
         </nav>
 
         <MetaSection
+          className={classNames(activeTabId > 2 && 'hidden')}
           metadata={activeTabId == 1 ? metadata.serverMeta : metadata.clientMeta}
-          currentTabDomain={activeTabId == 1 && currentTabDomain}
+          currentDomain={activeTabId == 1 ? currentDomain : ''}
         />
+        {/* {activeTabId == 3 && (
+          <pre className="p-2 min-h-64 text-gray-800 text-xs font-mono">
+            {JSON.stringify(whoisInfo, null, 2)}
+          </pre>
+        )} */}
       </main>
-    </div>
+    </PopUpLayout>
   )
 }
 
