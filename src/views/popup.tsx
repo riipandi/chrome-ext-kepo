@@ -16,11 +16,10 @@ const Popup = () => {
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, async ([currentTab]) => {
-      const domain = parse(currentTab.url || '').domain || ''
       const hostname = parse(currentTab.url || '').hostname || ''
       setCurrentDomain(hostname)
       setClientInfo(await getClientInfo())
-      setServerInfo(await parseHostMeta(hostname))
+      setServerInfo(await parseHostMeta(currentTab.url || ''))
     })
   }, [])
 
