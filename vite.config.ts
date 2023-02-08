@@ -7,7 +7,7 @@ import { defineManifest } from '@crxjs/vite-plugin'
 const manifest = defineManifest({
   name: 'Kepo',
   description:
-    'This extension displays your public IPv4 address, provider name and quickly view HTTP headers for the current page.',
+    'This extension displays your public IP address, ISP name and quickly view information for the current page.',
   version: '0.1.0',
   manifest_version: 3,
   host_permissions: ['http://*/*', 'https://*/*'],
@@ -39,7 +39,7 @@ const manifest = defineManifest({
       matches: [],
     },
   ],
-  permissions: ['storage', 'tabs', 'webRequest'],
+  permissions: ['storage', 'tabs', 'activeTab', 'webRequest'],
 })
 
 // https://vitejs.dev/config/

@@ -3,8 +3,10 @@ lockfileVersion: 5.4
 specifiers:
   '@crxjs/vite-plugin': ^1.0.14
   '@preact/preset-vite': ^2.4.0
+  '@types/chrome': ^0.0.212
   preact: ^10.11.2
   prettier: ^2.7.1
+  tldts: ^5.7.105
   typescript: ~4.8.4
   vite: ^2.9.13
   vite-plugin-windicss: ^1.8.10
@@ -12,10 +14,12 @@ specifiers:
 
 dependencies:
   preact: 10.11.2
+  tldts: 5.7.105
 
 devDependencies:
   '@crxjs/vite-plugin': 1.0.14_vite@2.9.15
   '@preact/preset-vite': 2.4.0_preact@10.11.2+vite@2.9.15
+  '@types/chrome': 0.0.212
   prettier: 2.7.1
   typescript: 4.8.4
   vite: 2.9.15
@@ -485,6 +489,27 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@types/chrome/0.0.212:
+    resolution: {integrity: sha512-O9blKfj6mQyBvkexEa71xcpRfkjAu8izQD3qGYfdwffk+mJhF7eogz628bZr5dETT6Eu7vU0stUGYG/+EQWj9g==}
+    dependencies:
+      '@types/filesystem': 0.0.32
+      '@types/har-format': 1.2.10
+    dev: true
+
+  /@types/filesystem/0.0.32:
+    resolution: {integrity: sha512-Yuf4jR5YYMR2DVgwuCiP11s0xuVRyPKmz8vo6HBY3CGdeMj8af93CFZX+T82+VD1+UqHOxTq31lO7MI7lepBtQ==}
+    dependencies:
+      '@types/filewriter': 0.0.29
+    dev: true
+
+  /@types/filewriter/0.0.29:
+    resolution: {integrity: sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==}
+    dev: true
+
+  /@types/har-format/1.2.10:
+    resolution: {integrity: sha512-o0J30wqycjF5miWDKYKKzzOU1ZTLuA42HZ4HE7/zqTOc/jTLdQ5NhYWvsRQo45Nfi1KHoRdNhteSI4BAxTF1Pg==}
     dev: true
 
   /@vitejs/plugin-react/2.1.0_vite@2.9.15:
@@ -1269,6 +1294,17 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /tldts-core/5.7.105:
+    resolution: {integrity: sha512-YcUuyM4LWdG/Ai3L53MZkajkZ0NlL3LmvOtN2eUnMsYlPXcIqzSFhUG43IM7fj062djVy2tdJFN+Ls52hsp+Bg==}
+    dev: false
+
+  /tldts/5.7.105:
+    resolution: {integrity: sha512-wWtgT+NT+o8LLN7DflfWGJM2/wJ8haPg0maLYseYVy+evWuuBQAThNnVen9GFEaUGMUp8EHFONEx6kHCsSiveA==}
+    hasBin: true
+    dependencies:
+      tldts-core: 5.7.105
+    dev: false
 
   /to-fast-properties/2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}

@@ -1,76 +1,100 @@
 import { render } from 'preact'
-import { useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
+import { parse } from 'tldts'
 import 'virtual:windi.css'
 
-const metadata = [
-  { id: 1, name: 'Page loading time', value: '2.867 ms' },
-  { id: 1, name: 'ISP Name', value: 'PT Telekomunikasi Indonesia' },
-  { id: 1, name: 'ISP Country', value: 'IDN / Indonesia' },
-  { id: 1, name: 'ISP Region', value: 'JK / Jakarta' },
-  { id: 2, name: 'Server IPv4 address', value: '192.111.111.111' },
-  // { id: 3, name: 'Server IPv6 address', value: '2001:448a:3053:87d:bca2:1692:dea4:40ca' },
-  { id: 2, name: 'Server domain name', value: 'ripandis.com' },
+import { AboutButton } from '../components/Button'
+import { MetaSection } from '../components/MetaSection'
+import { classNames } from '../utils'
+
+const tabs = [
+  { id: 1, name: 'Server Info' },
+  { id: 2, name: 'Client Info' },
 ]
 
 const Popup = () => {
-  const [version] = useState('0.1.0')
+  const [currentTabDomain, setCurrentTabDomain] = useState<any | undefined>(undefined)
+  const [userInfo, setClientInfo] = useState<any | undefined>(undefined)
+  const [hostInfo, setHostInfo] = useState<any | undefined>(undefined)
+  const [activeTabId, setActiveTabId] = useState<number>(1)
+
+  const metadata = useMemo(() => {
+    return {
+      clientMeta: [
+        { name: 'Your IP Address', value: null },
+        { name: 'ISP Name', value: null },
+        { name: 'ISP Country', value: null },
+        { name: 'ISP Region', value: null },
+      ],
+      serverMeta: [
+        { name: 'Page loading time', value: null },
+        { name: 'Host IPv4 address', value: null },
+        { name: 'Host IPv6 address', value: null },
+      ],
+    }
+  }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`https://ipwho.is`)
+      const data = await response.json()
+      setClientInfo(data)
+    }
+
+    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
+      const url = parse(currentTab.url || '')
+      const currentTabID = currentTab.id || 0
+
+      chrome.tabs.sendMessage(currentTabID, '', (response) => {
+        console.log('DEBUG ~ response', response)
+        setHostInfo(response)
+      })
+
+      setCurrentTabDomain(url.domain)
+      fetchData()
+    })
+  }, [])
 
   return (
     <div className="w-100 bg-white">
       <header className="py-2.5 px-3.5 bg-green-500 text-white flex items-center justify-between">
         <div>
-          <h1 className="font-medium text-sm">
-            Your IP : <span className="hover:underline cursor-pointer">192.168.1.1</span>
-          </h1>
+          <h1 className="font-medium text-sm">{currentTabDomain}</h1>
         </div>
         <div>
-          <a
-            href="https://github.com/riipandi/chrome-ext-kepo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              className="w-5 h-5 hover:text-green-800"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-              />
-            </svg>
-          </a>
+          <AboutButton />
         </div>
       </header>
 
-      <main className="pb-2 pt-1">
-        <div className="flex flex-col">
-          <table className="min-w-full divide-y divide-gray-300">
-            <thead>
-              <tr>
-                <th className="py-2 pl-4 pr-3 text-left text-xs font-semibold text-gray-900">
-                  Metadata
-                </th>
-                <th className="py-2 pl-3 pr-4 text-right text-xs font-semibold text-gray-900">
-                  Value
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {metadata.map((meta) => (
-                <tr key={meta.id} className="border-t border-gray-200">
-                  <td className="py-2 pl-4 pr-3 text-gray-900 text-xs">{meta.name}</td>
-                  <td className="py-2 px-3 font-mono text-xs text-right text-gray-500">
-                    {meta.value}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <main className="block">
+        <nav className="isolate flex divide-x divide-gray-200" aria-label="Tabs">
+          {tabs.map((tab, tabIdx) => (
+            <button
+              type="button"
+              key={tab.name}
+              className={classNames(
+                activeTabId === tab.id ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
+                'group relative min-w-0 flex-1 overflow-hidden bg-white p-2 text-xs font-medium text-center hover:bg-gray-50 focus:z-10',
+              )}
+              aria-current={activeTabId === tab.id ? 'page' : undefined}
+              onClick={() => setActiveTabId(tab.id)}
+            >
+              <span>{tab.name}</span>
+              <span
+                aria-hidden="true"
+                className={classNames(
+                  activeTabId === tab.id ? 'bg-green-500' : 'bg-transparent',
+                  'absolute inset-x-0 bottom-0 h-0.5',
+                )}
+              />
+            </button>
+          ))}
+        </nav>
+
+        <MetaSection
+          metadata={activeTabId == 1 ? metadata.serverMeta : metadata.clientMeta}
+          currentTabDomain={activeTabId == 1 && currentTabDomain}
+        />
       </main>
     </div>
   )

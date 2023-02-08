@@ -18,21 +18,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-console.info('this is the content')
+import { getPageTitle } from './utils'
 
-export default {
-  ip: '36.72.34.36',
-  continent_code: 'AS',
-  country: 'Indonesia',
-  country_code: 'ID',
-  country_code3: 'IDN',
-  region: 'West Java',
-  region_code: 'JB',
-  city: 'Bandung',
-  latitude: -6.9217,
-  longitude: 107.6071,
-  timezone: 'Asia/Jakarta',
-  offset: 25200,
-  asn: 7713,
-  organization: 'PT Telekomunikasi Indonesia',
-}
+chrome.runtime.onMessage.addListener((_msg, _sender, callback) => {
+  const message = getPageTitle()
+  callback(message)
+})

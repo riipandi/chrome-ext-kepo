@@ -2,7 +2,7 @@
   "name": "chrome-ext-kepo",
   "version": "0.1.0",
   "author": "Aris Ripandi",
-  "description": "This extension displays your public IPv4 address, provider name and quickly view HTTP headers for the current page.",
+  "description": "This extension displays your public IP address, ISP name and quickly view information for the current page.",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -15,11 +15,13 @@
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
   },
   "dependencies": {
-    "preact": "^10.11.2"
+    "preact": "^10.11.2",
+    "tldts": "^5.7.105"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^1.0.14",
     "@preact/preset-vite": "^2.4.0",
+    "@types/chrome": "^0.0.212",
     "prettier": "^2.7.1",
     "typescript": "~4.8.4",
     "vite": "^2.9.13",

@@ -18,12 +18,38 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-console.info('this is background script')
+import { getHostInfo, getClientInfo, isValidDomain } from './utils'
 
-async function getIp() {
-  const response = await fetch(`https://ipapi.co/json`)
-  const data = await response.json()
-  return data
-}
+// chrome.runtime.onInstalled.addListener(() => {
+//   console.log('onInstalled...')
+// })
 
-export { getIp }
+/**
+ * Perform get user information when connected.
+ */
+// chrome.runtime.onConnect.addListener(async () => {
+//   const userInfo = await getClientInfo()
+//   console.log('DEBUG ~ onConnect', userInfo)
+// })
+
+/**
+ * Perform get host information when tab activated or updated.
+ */
+chrome.tabs.onUpdated.addListener(async (tabId, _changeInfo, tab) => {
+  if (!tab.url || !isValidDomain(tab.url)) {
+    chrome.action.setIcon({ tabId, path: 'img/offline-48.png' })
+    chrome.action.setPopup({ popup: '' })
+  } else {
+    chrome.action.setIcon({ tabId, path: 'img/logo-48.png' })
+    chrome.action.setPopup({ popup: 'popup.html' })
+
+    const hostInfo = await getHostInfo(tab.url)
+    console.log('DEBUG ~ hostInfo', hostInfo)
+  }
+})
+
+// chrome.runtime.onMessage.addListener(async (_msg, _sender, callback) => {
+//   const userInfo = await getClientInfo()
+//   console.log('DEBUG ~ userInfo', userInfo)
+//   callback(userInfo)
+// })
