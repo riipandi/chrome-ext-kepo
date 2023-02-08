@@ -20,7 +20,7 @@ const Popup = () => {
       const hostname = parse(currentTab.url || '').hostname || ''
       setCurrentDomain(hostname)
       setClientInfo(await getClientInfo())
-      setServerInfo(await parseHostMeta(domain))
+      setServerInfo(await parseHostMeta(hostname))
     })
   }, [])
 

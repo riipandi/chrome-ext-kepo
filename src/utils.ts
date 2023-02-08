@@ -58,8 +58,14 @@ export async function parseHostMeta(domain: string) {
     { name: 'Host ISP Name', value: serverInfo?.connection.isp },
     { name: 'Host ORG Name', value: serverInfo?.connection.org },
     { name: 'Domain Registrar Name', value: whoisData?.registrar },
-    { name: 'Domain Registration Date', value: formatDate(whoisData?.registry_created_date) },
-    { name: 'Domain Expiration Data', value: formatDate(whoisData?.registry_expiration_date) },
+    {
+      name: 'Domain Registration Date',
+      value: formatDate(whoisData.registry_created_date || undefined),
+    },
+    {
+      name: 'Domain Expiration Date',
+      value: formatDate(whoisData.registry_expiration_date || undefined),
+    },
     { name: 'Domain Status', value: whoisData?.domain_status },
   ]
 }
@@ -73,7 +79,8 @@ export function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function formatDate(dateString: Date | string): string {
+export function formatDate(dateString: Date | string | undefined): string | undefined {
+  if (!dateString) return undefined
   const date = new Date(dateString).toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'long',
