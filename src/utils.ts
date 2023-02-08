@@ -10,7 +10,7 @@ function isValidDomain(url: string): boolean {
 }
 
 async function getClientInfo(): Promise<IPInfoType> {
-  const response = await fetch('https://kepo.deno.dev/ip')
+  const response = await fetch('https://ipwho.is')
   return await response.json()
 }
 
