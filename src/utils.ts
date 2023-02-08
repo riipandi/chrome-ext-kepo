@@ -51,7 +51,7 @@ export async function parseHostMeta(domain: string) {
   console.log('DEBUG ~ serverInfo', serverInfo)
 
   return [
-    { name: 'Page loading time', value: '2.90 ms' },
+    // { name: 'Page loading time', value: null },
     { name: 'Host IPv4 address', value: hostIpAddr },
     { name: 'Host IPv6 address', value: null },
     { name: 'Host AS Number', value: serverInfo?.connection.asn },

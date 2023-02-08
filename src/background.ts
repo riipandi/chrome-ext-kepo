@@ -48,23 +48,23 @@ chrome.tabs.onUpdated.addListener(async (tabId, _changeInfo, tab) => {
 /**
  * Get performance measure.
  */
-chrome.runtime.onMessage.addListener(async (request, sender, callback) => {
-  // This cache stores page load time for each tab, so they don't interfere
-  chrome.storage.local.get('cache').then((data) => {
-    if (!data.cache) data.cache = {}
-    const currentTabId = sender?.tab?.id || 0
-    data.cache['tab' + currentTabId] = request.timing
-    chrome.storage.local.set(data).then(() => {
-      chrome.action.setBadgeText({ text: request.time, tabId: currentTabId })
-      chrome.action.setPopup({ tabId: currentTabId, popup: 'popup.html' })
-    })
-  })
-})
+// chrome.runtime.onMessage.addListener(async (request, sender, callback) => {
+//   // This cache stores page load time for each tab, so they don't interfere
+//   chrome.storage.local.get('cache').then((data) => {
+//     if (!data.cache) data.cache = {}
+//     const currentTabId = sender?.tab?.id || 0
+//     data.cache['tab' + currentTabId] = request.timing
+//     chrome.storage.local.set(data).then(() => {
+//       chrome.action.setBadgeText({ text: request.time, tabId: currentTabId })
+//       chrome.action.setPopup({ tabId: currentTabId, popup: 'popup.html' })
+//     })
+//   })
+// })
 
 // cache eviction
-chrome.tabs.onRemoved.addListener((tabId) => {
-  chrome.storage.local.get('cache').then((data) => {
-    if (data.cache) delete data.cache['tab' + tabId]
-    chrome.storage.local.set(data)
-  })
-})
+// chrome.tabs.onRemoved.addListener((tabId) => {
+//   chrome.storage.local.get('cache').then((data) => {
+//     if (data.cache) delete data.cache['tab' + tabId]
+//     chrome.storage.local.set(data)
+//   })
+// })

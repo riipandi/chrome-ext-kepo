@@ -18,13 +18,6 @@ const Popup = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, async ([currentTab]) => {
       const domain = parse(currentTab.url || '').domain || ''
       const hostname = parse(currentTab.url || '').hostname || ''
-
-      // const currentTabID = currentTab.id || 0
-      // chrome.tabs.sendMessage(currentTabID, '', (response) => {
-      //   console.log('DEBUG ~ response', response)
-      //   setHostIpAddr(response)
-      // })
-
       setCurrentDomain(hostname)
       setClientInfo(await getClientInfo())
       setServerInfo(await parseHostMeta(domain))
@@ -41,7 +34,7 @@ const Popup = () => {
   if (!clientInfo || !serverInfo) {
     return (
       <PopUpLayout domain={currentDomain}>
-        <div className="h-9 p-2">Loading information...</div>
+        <div className="h-9 py-2 px-3">Loading information...</div>
       </PopUpLayout>
     )
   }
@@ -51,7 +44,7 @@ const Popup = () => {
       <main className="block">
         <nav className="isolate flex divide-x divide-gray-200" aria-label="Tabs">
           {[
-            { id: 1, name: 'Server Info' },
+            { id: 1, name: 'Website Info' },
             { id: 2, name: 'Client Info' },
           ].map((tab, tabIdx) => (
             <button
@@ -81,11 +74,6 @@ const Popup = () => {
           metadata={activeTabId == 1 ? metadata.serverMeta : metadata.clientMeta}
           currentDomain={activeTabId == 1 ? currentDomain : ''}
         />
-        {/* {activeTabId == 3 && (
-          <pre className="p-2 min-h-64 text-gray-800 text-xs font-mono">
-            {JSON.stringify(whoisInfo, null, 2)}
-          </pre>
-        )} */}
       </main>
     </PopUpLayout>
   )
