@@ -44,11 +44,13 @@ export function parseClientMeta(userInfo: IPInfoType | undefined) {
   ]
 }
 
-export async function parseHostMeta(domain: string) {
+export async function parseHostMeta(url: string) {
+  const domain = parse(url).domain || ''
+  const hostname = parse(url || '').hostname || ''
+
   const whoisData = await getDomainWhois(domain)
-  const hostIpAddr = await gethostIpAddr(domain)
+  const hostIpAddr = await gethostIpAddr(hostname)
   const serverInfo: IPInfoType = await getClientInfo(hostIpAddr)
-  console.log('DEBUG ~ serverInfo', serverInfo)
 
   return [
     // { name: 'Page loading time', value: null },
