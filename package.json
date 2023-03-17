@@ -1,6 +1,6 @@
 {
   "name": "chrome-ext-kepo",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Aris Ripandi",
   "description": "This extension displays your public IP address, ISP name and quickly view information for the current page.",
   "type": "module",

@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
           name: 'Kepo',
           description:
             'This extension displays your public IP address, ISP name and quickly view information for the current page.',
-          version: '0.1.1',
+          version: '0.2.0',
           manifest_version: 3,
           host_permissions: ['http://*/*', 'https://*/*'],
           icons: {
@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
               matches: [],
             },
           ],
-          permissions: ['storage', 'tabs', 'activeTab', 'webRequest'],
+          permissions: ['tabs', 'activeTab', 'webRequest', 'webRequestBlocking'],
         }),
       }),
       preact(),

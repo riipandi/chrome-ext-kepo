@@ -9,6 +9,10 @@ Summary
   5. version timestamp follow the yyyy.MM.dd format
 ```
 
+## 0.2.0 [2023.02.28]
+
+- feat: headers inspection
+
 ## 0.1.0 [2023.01.08]
 
 - feat: initial public release

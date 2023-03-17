@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks'
 import 'virtual:windi.css'
 
 const Options = () => {
-  const [version, _setVersion] = useState('0.1.0')
+  const [version, _setVersion] = useState('0.2.0')
 
   return (
     <main>
